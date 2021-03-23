@@ -21,7 +21,7 @@ provider "aws" {
 }
 
 resource "aws_lambda_function" "hello" {
-  s3_bucket = "spacelift-demo-preview-environments"
+  s3_bucket = "spacelift-demo-preview-environments-service"
   s3_key = "${var.code_version}.zip"
   function_name = "hello${local.suffix}"
   role = aws_iam_role.iam_for_lambda_tf.arn
