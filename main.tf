@@ -118,7 +118,7 @@ data "aws_route53_zone" "liftspace" {
 resource "aws_acm_certificate" "endpoint-certificate" {
   provider = aws.us-east-1
 
-  domain_name       = "webhooks.${var.domain_name}"
+  domain_name       = "${var.environment}.${var.domain_name}"
   validation_method = "DNS"
 
   lifecycle {
