@@ -111,6 +111,10 @@ resource "aws_api_gateway_base_path_mapping" "webhooks" {
   domain_name = "${var.environment}.${var.domain_name}"
 }
 
+data "aws_route53_zone" "liftspace" {
+  name = "${var.domain_name}."
+}
+
 resource "aws_acm_certificate" "endpoint-certificate" {
   provider = aws.us-east-1
 
@@ -139,5 +143,5 @@ resource "aws_route53_record" "endpoint-certificate" {
   each.value.record]
   ttl     = 60
   type    = each.value.type
-  zone_id = var.zone_id
+  zone_id = data.aws_route53_zone.liftspace.zone_id
 }
