@@ -14,6 +14,7 @@ variable "aws_region" {
 
 locals {
   suffix = var.environment == "" ? "" : "_${var.environment}"
+  endpoint = "${var.environment}.demo-preview-environments.${var.domain_name}"
 }
 
 provider "aws" {
@@ -108,7 +109,7 @@ resource "aws_api_gateway_base_path_mapping" "endpoint" {
 
   api_id      = aws_api_gateway_rest_api.hello.id
   stage_name  = aws_api_gateway_deployment.hello_v1.stage_name
-  domain_name = "${var.environment}.${var.domain_name}"
+  domain_name = local.endpoint
 }
 
 data "aws_route53_zone" "liftspace" {
@@ -140,7 +141,7 @@ resource "aws_route53_record" "endpoint" {
 resource "aws_acm_certificate" "endpoint-certificate" {
   provider = aws.us-east-1
 
-  domain_name       = "${var.environment}.${var.domain_name}"
+  domain_name       = local.endpoint
   validation_method = "DNS"
 
   lifecycle {
