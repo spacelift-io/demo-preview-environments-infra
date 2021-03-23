@@ -116,12 +116,16 @@ data "aws_route53_zone" "liftspace" {
 }
 
 resource "aws_api_gateway_domain_name" "endpoint" {
+  provider = aws.us-east-1
+
   certificate_arn = aws_acm_certificate.endpoint-certificate.arn
   domain_name     = aws_acm_certificate.endpoint-certificate.domain_name
   security_policy = "TLS_1_2"
 }
 
 resource "aws_route53_record" "endpoint" {
+  provider = aws.us-east-1
+
   name    = aws_api_gateway_domain_name.endpoint.domain_name
   type    = "A"
   zone_id = data.aws_route53_zone.liftspace.zone_id
