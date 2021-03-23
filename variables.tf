@@ -18,7 +18,7 @@ variable "environment" {
 }
 
 locals {
-  suffix = "_${var.environment}"
+  suffix   = "_${var.environment}"
   endpoint = "${var.environment}.${var.domain_name}"
 }
 
