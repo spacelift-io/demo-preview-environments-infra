@@ -99,7 +99,7 @@ output "url" {
   value = "${aws_api_gateway_deployment.hello_v1.invoke_url}${aws_api_gateway_resource.hello.path}"
 }
 
-resource "aws_api_gateway_base_path_mapping" "webhooks" {
+resource "aws_api_gateway_base_path_mapping" "endpoint" {
   depends_on = [
     aws_route53_record.endpoint-certificate
   ]
