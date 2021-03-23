@@ -124,7 +124,7 @@ resource "aws_api_gateway_domain_name" "endpoint" {
 resource "aws_route53_record" "endpoint" {
   name    = aws_api_gateway_domain_name.endpoint.domain_name
   type    = "A"
-  zone_id = data.aws_route53_zone.liftspace
+  zone_id = data.aws_route53_zone.liftspace.zone_id
 
   alias {
     evaluate_target_health = true
