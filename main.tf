@@ -23,7 +23,7 @@ provider "aws" {
 
 provider "aws" {
   alias  = "us-east-1"
-  region = var.aws_region
+  region = "us-east-1"
 }
 
 resource "aws_lambda_function" "hello" {
@@ -102,7 +102,7 @@ output "url" {
 
 resource "aws_api_gateway_base_path_mapping" "endpoint" {
   depends_on = [
-    aws_route53_record.endpoint-certificate
+    aws_api_gateway_domain_name.endpoint
   ]
 
   count = var.domain_name != "" ? 1 : 0
@@ -117,8 +117,6 @@ data "aws_route53_zone" "liftspace" {
 }
 
 resource "aws_api_gateway_domain_name" "endpoint" {
-  provider = aws.us-east-1
-
   certificate_arn = aws_acm_certificate.endpoint-certificate.arn
   domain_name     = aws_acm_certificate.endpoint-certificate.domain_name
   security_policy = "TLS_1_2"
