@@ -5,6 +5,9 @@ variable "environment" {
 variable "code_version" {
 }
 
+variable "domain_name" {
+}
+
 variable "aws_region" {
   default = "eu-west-1"
 }
@@ -19,7 +22,7 @@ provider "aws" {
 
 resource "aws_lambda_function" "hello" {
   s3_bucket = "spacelift-demo-preview-environments"
-  s3_key = var.code_version
+  s3_key = "${var.code_version}.zip"
   function_name = "hello${local.suffix}"
   role = aws_iam_role.iam_for_lambda_tf.arn
   handler = "index.handler"
@@ -75,7 +78,7 @@ resource "aws_api_gateway_deployment" "hello_v1" {
     aws_api_gateway_integration.hello
   ]
   rest_api_id = aws_api_gateway_rest_api.hello.id
-  stage_name  = "v1"
+  stage_name  = var.environment
 }
 
 resource "aws_api_gateway_integration" "hello" {
@@ -89,4 +92,12 @@ resource "aws_api_gateway_integration" "hello" {
 
 output "url" {
   value = "${aws_api_gateway_deployment.hello_v1.invoke_url}${aws_api_gateway_resource.hello.path}"
+}
+
+resource "aws_api_gateway_base_path_mapping" "webhooks" {
+  count = var.domain_name != "" ? 1 : 0
+
+  api_id      = aws_api_gateway_rest_api.hello.id
+  stage_name  = aws_api_gateway_deployment.hello_v1.stage_name
+  domain_name = "${var.environment}.${var.domain_name}"
 }
