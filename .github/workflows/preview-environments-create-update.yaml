@@ -12,7 +12,7 @@ jobs:
     steps:
       - id: calculate-environment-id
         run: |
-          echo "::set-output name=environment::$(echo -n \"${{ github.event.organization }}${{ github.event.repository }}${{ github.event.number }}\" | sha256sum | cut -d " " -f 1 | head -c 7)"
+          echo "::set-output name=environment::$(echo -n \"${{ github.event.organization.login }}${{ github.event.repository.name }}${{ github.event.number }}\" | sha256sum | cut -d " " -f 1 | head -c 7)"
       - id: set-environment-file
         uses: spacelift-io/update-file-action@v1.0.0
         with:
