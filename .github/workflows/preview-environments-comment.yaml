@@ -1,4 +1,4 @@
-name: Create or Update Preview Environment
+name: Create Preview Environment Comment
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   preview-environment:
-    name: Create or Update Preview Environment
+    name: Create Preview Environment Comment
     runs-on: ubuntu-latest
 
     steps:
