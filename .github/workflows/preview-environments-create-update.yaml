@@ -1,0 +1,37 @@
+name: Create or Update Preview Environment
+
+on:
+  pull_request:
+    types: [opened, reopened, edited, synchronize]
+
+jobs:
+  preview-environment:
+    name: Create or Update Preview Environment
+    runs-on: ubuntu-latest
+
+    steps:
+      - id: calculate-environment-id
+        run: |
+          echo "::set-output name=environment::$(echo -n \"${{ github.event.organization }}${{ github.event.repository }}${{ github.event.number }}\" | sha256sum | cut -d " " -f 1 | head -c 7)"
+      - id: set-environment-file
+        uses: spacelift-io/update-file-action@v1.0.0
+        with:
+          github-token: ${{ secrets.GH_TOKEN }}
+          owner: spacelift-io
+          repository: demo-preview-environments-manager
+          target-file-path: 'hello-service/environments/${{ github.event.organization.login }}-${{ github.event.repository.name }}-${{ github.event.number }}-${{ steps.calculate-environment-id.outputs.environment }}.tf'
+          content: |
+            module "${{ github.event.organization.login }}-${{ github.event.repository.name }}-${{ github.event.number }}-${{ steps.calculate-environment-id.outputs.environment }}" {
+              source = "../template"
+
+              manager_stack_id        = var.current_stack_id
+              infra_repository_branch = "${{ github.event.pull_request.head.ref }}"
+              aws_role                = var.aws_role
+              code_version            = "latest"
+              domain_name             = var.domain_name
+              environment             = "${{ steps.calculate-environment-id.outputs.environment }}"
+
+              providers = {
+                spacelift = spacelift
+              }
+            }

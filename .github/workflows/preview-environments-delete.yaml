@@ -1,0 +1,23 @@
+name: Delete Preview Environment
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  preview-environment:
+    name: Delete Preview Environment
+    runs-on: ubuntu-latest
+
+    steps:
+      - id: calculate-environment-id
+        run: |
+          echo "::set-output name=environment::$(echo -n \"${{ github.event.organization }}${{ github.event.repository }}${{ github.event.number }}\" | sha256sum | cut -d " " -f 1 | head -c 7)"
+      - id: set-environment-file
+        uses: spacelift-io/update-file-action@v1.0.0
+        with:
+          github-token: ${{ secrets.GH_TOKEN }}
+          owner: spacelift-io
+          repository: demo-preview-environments-manager
+          target-file-path: 'hello-service/environments/${{ github.event.organization.login }}-${{ github.event.repository.name }}-${{ github.event.number }}-${{ steps.calculate-environment-id.outputs.environment }}.tf'
+          delete: true
