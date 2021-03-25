@@ -19,6 +19,7 @@ jobs:
           github-token: ${{ secrets.GH_TOKEN }}
           owner: spacelift-io
           repository: demo-preview-environments-manager
+          message: "Create environment ${{ steps.calculate-environment-id.outputs.environment }}"
           target-file-path: 'hello-service/environments/${{ github.event.organization.login }}-${{ github.event.repository.name }}-${{ github.event.number }}-${{ steps.calculate-environment-id.outputs.environment }}.tf'
           content: |
             module "${{ github.event.organization.login }}-${{ github.event.repository.name }}-${{ github.event.number }}-${{ steps.calculate-environment-id.outputs.environment }}" {
