@@ -16,7 +16,7 @@ jobs:
       - uses: mshick/add-pr-comment@v1
         with:
           message: |
-            Preview Environment will shortly be available at https://${{ steps.calculate-environment-id.outputs.environment }}.hello-service.preview-environments.liftspace.net/hello
+            Preview Environment will shortly be available at https://${{ steps.calculate-environment-id.outputs.environment }}.hello-service.preview-environments.liftspace.net/
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           repo-token-user-login: 'preview-environments'
           allow-repeats: false
