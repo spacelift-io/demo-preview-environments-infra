@@ -2,6 +2,9 @@ variable "aws_region" {
   default = "eu-west-1"
 }
 
+variable "certificate_arn" {
+}
+
 variable "code_version" {
 }
 
@@ -13,7 +16,7 @@ variable "environment" {
 
 locals {
   suffix   = "_${var.environment}"
-  endpoint = "*.${var.domain_name}"
+  endpoint = "${var.environment}.${var.domain_name}"
 }
 
 provider "aws" {

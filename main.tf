@@ -68,10 +68,16 @@ resource "aws_api_gateway_integration" "hello" {
   uri                     = aws_lambda_function.hello.invoke_arn
 }
 
+resource "aws_api_gateway_domain_name" "test-endpoint" {
+  certificate_arn = var.certificate_arn
+  domain_name     = local.endpoint
+  security_policy = "TLS_1_2"
+}
+
 resource "aws_api_gateway_base_path_mapping" "endpoint" {
   count = var.domain_name != "" ? 1 : 0
 
   api_id      = aws_api_gateway_rest_api.hello.id
   stage_name  = aws_api_gateway_deployment.hello_v1.stage_name
-  domain_name = "test.${var.domain_name}"
+  domain_name = local.endpoint
 }
