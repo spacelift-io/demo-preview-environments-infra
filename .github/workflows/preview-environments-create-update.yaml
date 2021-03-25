@@ -27,6 +27,7 @@ jobs:
               manager_stack_id        = var.current_stack_id
               infra_repository_branch = "${{ github.event.pull_request.head.ref }}"
               aws_role                = var.aws_role
+              certificate_arn         = var.certificate_arn
               code_version            = "latest"
               domain_name             = var.domain_name
               environment             = "${{ steps.calculate-environment-id.outputs.environment }}"
