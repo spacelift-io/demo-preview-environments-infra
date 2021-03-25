@@ -2,16 +2,10 @@ variable "aws_region" {
   default = "eu-west-1"
 }
 
-variable "certificate_arn" {
-}
-
 variable "code_version" {
 }
 
 variable "domain_name" {
-}
-
-variable "domain_name_zone_id" {
 }
 
 variable "environment" {

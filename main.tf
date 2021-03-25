@@ -69,10 +69,6 @@ resource "aws_api_gateway_integration" "hello" {
 }
 
 resource "aws_api_gateway_base_path_mapping" "endpoint" {
-  depends_on = [
-    aws_api_gateway_domain_name.endpoint
-  ]
-
   count = var.domain_name != "" ? 1 : 0
 
   api_id      = aws_api_gateway_rest_api.hello.id
